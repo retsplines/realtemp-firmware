@@ -3,6 +3,8 @@
     "files.associations": {
         "delay.h": "c",
         "io.h": "c",
-        "defs.h": "c"
+        "defs.h": "c",
+        "at30ts75.h": "c",
+        "stdio.h": "c"
     }
 }
