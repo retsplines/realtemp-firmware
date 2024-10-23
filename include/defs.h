@@ -7,7 +7,7 @@
 #define __AVR_ATtiny214__ 1
 
 // CPU frequency in Hz
-// Runs at 20 MHz with a prescaler of 6 by default
+// Runs at 20 MHz with a prescaler of 5 by default
 #define F_CPU 3333333UL
 
 // Time between wake-ups in seconds

@@ -2,7 +2,9 @@
 
 #define H_AT30TS75
 
-void at30ts75_init(void);
-int at30ts75_convert(void);
+#include <stdint.h>
 
-#endif // H_DEFS
+void at30ts75_init(void);
+int32_t at30ts75_convert(void);
+
+#endif // H_AT30TS75

@@ -3,7 +3,7 @@ CC = avr-gcc
 LD = avr-ld
 
 # Serial port for programming
-PORT = /dev/ttyUSB0
+PORT = /dev/cu.usbserial-843320
 
 # Target Device/Architecture
 MCU = attiny214
@@ -47,6 +47,9 @@ $(TARGET).hex: $(TARGET).elf
 
 clean: 
 	rm -f $(TARGET).elf $(TARGET).hex $(OBJECTS)
+
+size:
+	avr-size --mcu=$(MCU) -C $(TARGET).elf
 
 # Program the device
 program: $(TARGET).hex
