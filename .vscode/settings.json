@@ -5,6 +5,10 @@
         "io.h": "c",
         "defs.h": "c",
         "at30ts75.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "infrared.h": "c",
+        "stddef.h": "c",
+        "util.h": "c",
+        "debug.h": "c"
     }
 }

@@ -3,13 +3,13 @@ CC = avr-gcc
 LD = avr-ld
 
 # Serial port for programming
-PORT = /dev/cu.usbserial-843320
+PORT = /dev/tty.usbserial-843310
 
 # Target Device/Architecture
 MCU = attiny214
 
 # Compiler flags
-CFLAGS = -g -Wall -mcall-prologues -mmcu=$(MCU) -Os -I include/
+CFLAGS = -g -Wall -mmcu=$(MCU) -Os -I include/
 
 # Project name
 NAME = realtemp

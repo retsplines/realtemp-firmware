@@ -56,9 +56,9 @@ static void at30ts75_read(uint8_t* data, size_t len);
 /**
  * Perform initialisation of the TWI and the AT30TS75.
  */
-void at30ts75_init(void)
+static void at30ts75_init(void)
 {
-    /**
+    /*
      * Set the baud rate.
      * This is defined by:
      *
@@ -90,11 +90,16 @@ void at30ts75_init(void)
 
     // Wait for the bus to be idle
     while (!(TWI0.MSTATUS & TWI_BUSSTATE_IDLE_gc));
-    _delay_ms(250);
 
     // Set the pointer register to the configuration register
     uint8_t write_bytes[2] = {REG_CONFIGURATION, config_register};
     at30ts75_write(write_bytes, 2);
+}
+
+static void at30ts75_deinit(void)
+{
+    // Disable TWI
+    TWI0.MCTRLA = 0;
 }
 
 /**
@@ -156,6 +161,9 @@ static void at30ts75_read(uint8_t* data, size_t len)
  */
 int32_t at30ts75_convert(void)
 {
+    // Initialise
+    at30ts75_init();
+
     // First, write the configuration register to set the one-shot bit
     uint8_t write_bytes[2] = {REG_CONFIGURATION, config_register | CONFIG_ONE_SHOT_bm};
     at30ts75_write(write_bytes, 2);
@@ -180,6 +188,9 @@ int32_t at30ts75_convert(void)
     if (temp[0] & 0x80) {
         result *= -1;
     }
+
+    // De-initialise
+    at30ts75_deinit();
 
     return (int32_t)(result * 62.5);
 }

@@ -11,10 +11,10 @@
 #define F_CPU 3333333UL
 
 // Time between wake-ups in seconds
-#define T_WAKE 10
+#define T_WAKE 30
 
 // Transmit interval in seconds
-#define T_TRANSMIT 30
+#define T_TRANSMIT 120
 
 // Transmit ºC delta threshold
 #define TX_DELTA_C 1
