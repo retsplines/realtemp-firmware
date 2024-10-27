@@ -4,6 +4,6 @@
 
 #include <stdint.h>
 
-int32_t at30ts75_convert(void);
+int8_t at30ts75_convert(void);
 
 #endif // H_AT30TS75

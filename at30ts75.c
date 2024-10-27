@@ -44,7 +44,7 @@
 uint8_t config_register  =
 
     // 12-bit resolution
-    (CONFIG_RESOLUTION_12BIT << CONFIG_RESOLUTION_bp) |
+    (CONFIG_RESOLUTION_9BIT << CONFIG_RESOLUTION_bp) |
 
     // Shutdown mode
     CONFIG_SHUTDOWN_bm;
@@ -157,40 +157,43 @@ static void at30ts75_read(uint8_t* data, size_t len)
 
 /**
  * Perform a temperature conversion, reading the value from the AT30TS75.
- * Returns the value in 1000th of degrees Celsius (millidegrees).
+ * We'll convert in 9-bit mode, as this is the fastest mode and we can only transmit whole degrees anyway.
  */
-int32_t at30ts75_convert(void)
+int8_t at30ts75_convert(void)
 {
     // Initialise
     at30ts75_init();
 
     // First, write the configuration register to set the one-shot bit
-    uint8_t write_bytes[2] = {REG_CONFIGURATION, config_register | CONFIG_ONE_SHOT_bm};
-    at30ts75_write(write_bytes, 2);
+    // We'll re-use temp_conv_buf for the commands and result data
+    uint8_t temp_conv_buf[2] = {REG_CONFIGURATION, config_register | CONFIG_ONE_SHOT_bm};
+    at30ts75_write(temp_conv_buf, 2);
 
-    // Wait for the conversion to complete (Tconv @ 12bit = 250-300ms)
-    _delay_ms(350);
+    // Wait for the conversion to complete (Tconv @ 9bit = 35ms)
+    _delay_ms(40);
     
     // Switch to the temperature register
-    write_bytes[0] = REG_TEMPERATURE;
-    at30ts75_write(write_bytes, 1);
+    temp_conv_buf[0] = REG_TEMPERATURE;
+    at30ts75_write(temp_conv_buf, 1);
 
     // Read the temperature
-    uint8_t temp[2] = {0};
-    at30ts75_read(temp, 2);
+    at30ts75_read(temp_conv_buf, 2);
 
     // Combine the two bytes into a single value
-    // The temperature is a 12-bit value, with the most significant bit being the sign
-    // The 4 least significant bits are not used.
-    int32_t result = (((temp[0] & 0x7f) << 8) | temp[1]) >> 4;
+    // The temperature is a 9-bit value, with the most significant bit being the sign
+    // The 7 least significant bits are not used.
+    int8_t result = (temp_conv_buf[0] & 0x7f) << 1 | (temp_conv_buf[1] & 0x80) >> 7;
 
-    // If the temperature is negative, set the sign bit
-    if (temp[0] & 0x80) {
+    // Divide by 2, since the temperature is in 0.5ºC increments in 9-bit mode
+    result >>= 1;
+
+    // If the temperature is indicated to be negative, invert our result
+    if (temp_conv_buf[0] & 0x80) {
         result *= -1;
     }
 
     // De-initialise
     at30ts75_deinit();
 
-    return (int32_t)(result * 62.5);
+    return result;
 }

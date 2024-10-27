@@ -32,10 +32,7 @@ int main(void)
     while (1)
     {
         // Do a temperature conversion
-        int32_t temp_mdeg = at30ts75_convert();
-
-        // Convert to ºC
-        int8_t temp_c = temp_mdeg / 1000;
+        int8_t temp_c = at30ts75_convert();
 
         // If the temperature has changed by more than TX_DELTA_C, or it's been T_TRANSMIT seconds since the last transmission
         if (
