@@ -11,13 +11,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-void flash() {
-    io_info_led(true);
-    _delay_ms(30);
-    io_info_led(false);
-    _delay_ms(30);
-}
-
 /**
  * The main routine.
  * 
@@ -53,10 +46,11 @@ int main(void)
             // Send a "Follow Me" message with the current temperature
             ir_midea_follow_me_temp(temp_c);
 
-            // Blink the LED a few times
-            for (int i = 0; i < 6; i ++) {
-                flash();
-            }
+            // Blink the LED once for the transmission
+            io_info_led(true);
+            _delay_ms(30);
+            io_info_led(false);
+            _delay_ms(30);
 
             // Reset the number of wakes since the last transmit
             wakes_since_last_transmit = 0;
@@ -67,8 +61,6 @@ int main(void)
 
         // Increment the number of wakes since the last transmit
         wakes_since_last_transmit ++;
-
-        flash();
 
         // Sleep
         sleep(T_WAKE);
