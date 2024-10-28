@@ -11,7 +11,7 @@
 #define F_CPU 3333333UL
 
 // Time between wake-ups in seconds
-#define T_WAKE 60
+#define T_WAKE 30
 
 // Transmit interval in seconds
 #define T_TRANSMIT 300
