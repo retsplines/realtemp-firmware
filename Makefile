@@ -3,7 +3,7 @@ CC = avr-gcc
 LD = avr-ld
 
 # Serial port for programming
-PORT = /dev/tty.usbserial-843310
+PORT = /dev/tty.usbserial-843330
 
 # Target Device/Architecture
 MCU = attiny214

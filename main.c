@@ -21,6 +21,16 @@ int main(void)
     // Setup IO
     io_setup();
 
+    // Flash the LED twice to indicate startup
+    io_info_led(true);
+    _delay_ms(100);
+    io_info_led(false);
+    _delay_ms(100);
+    io_info_led(true);
+    _delay_ms(100);
+    io_info_led(false);
+    _delay_ms(2000);
+
     // Keep track of the last converted temperature
     int8_t last_temp_c = -1;
     uint8_t wakes_since_last_transmit = 0;

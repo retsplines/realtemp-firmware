@@ -14,6 +14,7 @@
 #define T_WAKE 30
 
 // Transmit interval in seconds
+// The air conditioner will reset to the internal temperature sensor value after 7 minutes without a transmission
 #define T_TRANSMIT 300
 
 // Transmit ºC delta threshold
